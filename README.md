@@ -1,12 +1,12 @@
 <img src="img/icon.jpg" alt="Notepad--" align="right" width="128px"></img>
 [![](https://img.shields.io/github/license/johnny263/notepad-minus-minus?style=flat-square)](https://github.com/syesjohnny/notepad-minus-minus/master/LICENSE)
 [![Discord](https://img.shields.io/discord/1165154972665659412?style=flat-square&logo=discord&label=Discord)](https://discord.gg/GNcq8sabBt)
-![](https://img.shields.io/github/downloads/syesjohnny/Notepad-minus-minus/total?style=flat-square)
+![](https://img.shields.io/github/downloads/syesjohnny/notepad-minus-minus/total?style=flat-square)
 ## About
 Notepad-- is an free open-source notepad application based on notepad++ (WIP)
 [**Full Changelog**](Changelog.md)
 > [!NOTE]
-> This project are still very WIP, if you find any issues/questions/suggestions feel free to ask in [Issues](https://github.com/johnny263/Notepad-minus-minus/issues) or [Discussions](https://github.com/johnny263/Notepad-minus-minus/discussions)
+> This project are still very WIP, if you find any issues/questions/suggestions feel free to ask in [Issues](https://github.com/johnny263/notepad-minus-minus/issues) or [Discussions](https://github.com/johnny263/notepad-minus-minus/discussions)
 
 <div align="center">
 
