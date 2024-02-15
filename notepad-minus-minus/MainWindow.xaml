@@ -6,7 +6,38 @@
         xmlns:local="clr-namespace:notepad_minus_minus"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    <Window.InputBindings>
+        <!--<KeyBinding Modifiers="Ctrl" Key="Scroll">
+            <KeyBinding.Command>
+                <local:Command Executed="EditingArea_Scroll"></local:Command>
+            </KeyBinding.Command>
+        </KeyBinding>-->
+    </Window.InputBindings>
     <Grid>
+        <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" ShowGridLines="True">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="24"/>
+                <RowDefinition/>
+                <RowDefinition Height="24"/>
+            </Grid.RowDefinitions>
+            <Menu>
+                <MenuItem>
+                    <MenuItem/>
+                </MenuItem>
+            </Menu>
+            <TextBox x:Name="EditingArea" Grid.Row="1" TextWrapping="Wrap" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" FontSize="14" UndoLimit="-1" AcceptsReturn="True" AcceptsTab="True"/>
+            <Grid Grid.Row="2" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Label x:Name="ZoomInfo" Content="%100" FontSize="16" Padding="5,0,5,0" ScrollViewer.VerticalScrollBarVisibility="Disabled" FlowDirection="RightToLeft" HorizontalContentAlignment="Right" Grid.Column="3"/>
+                <Label x:Name="DocInfo" Content="docinfo" FontSize="16" Padding="5,0,5,0" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
+                <Label x:Name="SelectionInfo" Content="Length: 0, Lines: 0" FontSize="16" Padding="5,0,5,0" ScrollViewer.VerticalScrollBarVisibility="Disabled" FlowDirection="RightToLeft" HorizontalContentAlignment="Stretch" Grid.Column="2"/>
+            </Grid>
+        </Grid>
 
     </Grid>
 </Window>

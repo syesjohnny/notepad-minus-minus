@@ -1,23 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\chenyeyi\\Desktop\\github project\\notepad-minus-minus\\notepad--\\notepad-minus-minus\\notepad-minus-minus\\notepad-minus-minus.csproj": {}
+    "C:\\Users\\tgg\\Source\\Repos\\notepad-minus-minus-new\\notepad-minus-minus\\notepad-minus-minus.csproj": {}
   },
   "projects": {
-    "C:\\Users\\chenyeyi\\Desktop\\github project\\notepad-minus-minus\\notepad--\\notepad-minus-minus\\notepad-minus-minus\\notepad-minus-minus.csproj": {
+    "C:\\Users\\tgg\\Source\\Repos\\notepad-minus-minus-new\\notepad-minus-minus\\notepad-minus-minus.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\chenyeyi\\Desktop\\github project\\notepad-minus-minus\\notepad--\\notepad-minus-minus\\notepad-minus-minus\\notepad-minus-minus.csproj",
+        "projectUniqueName": "C:\\Users\\tgg\\Source\\Repos\\notepad-minus-minus-new\\notepad-minus-minus\\notepad-minus-minus.csproj",
         "projectName": "notepad-minus-minus",
-        "projectPath": "C:\\Users\\chenyeyi\\Desktop\\github project\\notepad-minus-minus\\notepad--\\notepad-minus-minus\\notepad-minus-minus\\notepad-minus-minus.csproj",
-        "packagesPath": "C:\\Users\\chenyeyi\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\chenyeyi\\Desktop\\github project\\notepad-minus-minus\\notepad--\\notepad-minus-minus\\notepad-minus-minus\\obj\\",
+        "projectPath": "C:\\Users\\tgg\\Source\\Repos\\notepad-minus-minus-new\\notepad-minus-minus\\notepad-minus-minus.csproj",
+        "packagesPath": "C:\\Users\\tgg\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\tgg\\Source\\Repos\\notepad-minus-minus-new\\notepad-minus-minus\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
+          "E:\\Microsoft Visual Studio\\Shared\\NuGetPackages",
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\chenyeyi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\tgg\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -25,6 +27,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
