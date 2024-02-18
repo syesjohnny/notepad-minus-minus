@@ -21,8 +21,38 @@
                 <RowDefinition Height="24"/>
             </Grid.RowDefinitions>
             <Menu>
-                <MenuItem>
-                    <MenuItem/>
+                <MenuItem Header="File" Height="18" Margin="4,3,4,3">
+                    <MenuItem Header="New" Click="OnNewFile" InputGestureText="Ctrl+N"/>
+                    <MenuItem Header="Open" Click="OnOpen" InputGestureText="Ctrl+O"/>
+                    <MenuItem Header="Save" Click="OnSave" InputGestureText="Ctrl+S"/>
+                    <MenuItem Header="Save As" Click="OnSaveAs" InputGestureText="Ctrl+Shift+S"/>
+                    <Separator/>
+                    <MenuItem Name="OpenFileFolderMenuItem" Header="Open File Folder" IsEnabled="False">
+                        <MenuItem Header="Explorer" Click="OpenInExplorer"/>
+                        <MenuItem Header="CMD" Click="OpenInCMD"/>
+                    </MenuItem>
+                    <Separator/>
+                    <MenuItem Header="New Window" Click="NewWindow" InputGestureText="Ctrl+Shift+N"/>
+                    <MenuItem Header="Close Window" Click="OnExitWindow" InputGestureText="Ctrl+Shift+W"/>
+                    <MenuItem Header="Exit" Click="OnExitAll" InputGestureText="Ctrl+W"/>
+                    <MenuItem Header="Re-open" Name="ReOpenMenuItem" Click="OnReOpen" InputGestureText="Ctrl+R" IsEnabled="False"/>
+                    <MenuItem Header="Re-open in default notepad" Name="ReOpenNotepadMenuItem" Click="ReOpenInNotepad" IsEnabled="False"/>
+                    <MenuItem Header="Delete File" Name="DeleteFileMenuItem" Click="RemoveCurrentFile" IsEnabled="False"/>
+                </MenuItem>
+                <MenuItem Header="Edit" Height="18" Margin="4,3,4,3">
+                    <MenuItem Header="New"/>
+                </MenuItem>
+                <MenuItem Header="View" Height="18" Margin="4,3,4,3">
+                    <MenuItem Header="New"/>
+                </MenuItem>
+                <MenuItem Header="Run" Height="18" Margin="4,3,4,3">
+                    <MenuItem Header="Settings"/>
+                </MenuItem>
+                <MenuItem Header="Settings" Height="18" Margin="4,3,4,3">
+                    <MenuItem Header="Settings"/>
+                </MenuItem>
+                <MenuItem Header="?" Height="18" Margin="4,3,4,3">
+                    <MenuItem Header="Settings"/>
                 </MenuItem>
             </Menu>
             <TextBox x:Name="EditingArea" Grid.Row="1" TextWrapping="Wrap" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" FontSize="14" UndoLimit="-1" AcceptsReturn="True" AcceptsTab="True"/>
