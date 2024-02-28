@@ -3,6 +3,7 @@ using Microsoft.Win32;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Security;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,20 +26,20 @@ public partial class MainWindow : Window
 	#region Properties
 	public bool HasChanged
 	{
-		get => _hasChanged;
+		get => this._hasChanged;
 		set
 		{
-			_hasChanged = value;
-			SetTitle();
+			this._hasChanged = value;
+			this.SetTitle();
 		}
 	}
 	public string CurrentFilePath
 	{
-		get => _currentFilePath;
+		get => this._currentFilePath;
 		set
 		{
-			_currentFilePath = value;
-			SetTitle();
+			this._currentFilePath = value;
+			this.SetTitle();
 			if (!string.IsNullOrEmpty(value))
 			{
 				this.OpenFileFolderMenuItem.IsEnabled = true;
@@ -60,24 +61,24 @@ public partial class MainWindow : Window
 	#endregion
 	public MainWindow(WindowContainer parent)
 	{
-		InitializeComponent();
+		this.InitializeComponent();
 		this.SetupEditingArea();
 
-		SetTitle();
+		this.SetTitle();
 		this._parent = parent;
-		this.Closing += OnClosing;
+		this.Closing += this.OnClosing;
 	}
 
 	#region Window/File Control
 	private void SetTitle()
 	{
-		bool isEmpty = string.IsNullOrEmpty(CurrentFilePath);
+		bool isEmpty = string.IsNullOrEmpty(this.CurrentFilePath);
 		this.Title = string.Format(
 			"{0}{1} {2}{3}{4}",
-			!HasChanged ? "" : "*",
-			isEmpty ? "Unnamed" : Path.GetFileName(CurrentFilePath),
+			!this.HasChanged ? "" : "*",
+			isEmpty ? "Unnamed" : Path.GetFileName(this.CurrentFilePath),
 			isEmpty ? "" : "(",
-			CurrentFilePath,
+			this.CurrentFilePath,
 			isEmpty ? "" : ")"
 		);
 	}
@@ -87,13 +88,13 @@ public partial class MainWindow : Window
 	#region File
 	private void OnNewFile(object _, RoutedEventArgs _2)
 	{
-		var result = AskSaveChange();
+		var result = this.AskSaveChange();
 
 		if (result == MessageBoxResult.Cancel) return;
-		if (result == MessageBoxResult.Yes) SaveFile();
-		CurrentFilePath = string.Empty;
+		if (result == MessageBoxResult.Yes) this.SaveFile();
+		this.CurrentFilePath = string.Empty;
 		this.EditingArea.Clear();
-		HasChanged = false;
+		this.HasChanged = false;
 	}
 	/// <summary>
 	/// It DOES check haschanged property
@@ -104,15 +105,15 @@ public partial class MainWindow : Window
 	/// </returns>
 	private MessageBoxResult? AskSaveChange()
 	{
-		if (HasChanged &&
+		if (this.HasChanged &&
 			!string.IsNullOrEmpty(this.EditingArea.Text) &&
-			(string.IsNullOrEmpty(CurrentFilePath) || File.Exists(CurrentFilePath)))
+			(string.IsNullOrEmpty(this.CurrentFilePath) || File.Exists(this.CurrentFilePath)))
 		{
 			return MessageBox.Show("Do you want to save changes?", "Warning", MessageBoxButton.YesNoCancel);
 		}
 		return null;
 	}
-	private void OnSave(object _, RoutedEventArgs _2) => SaveFile();
+	private void OnSave(object _, RoutedEventArgs _2) => this.SaveFile();
 	private void OnSaveAs(object _, RoutedEventArgs _2)
 	{
 		SaveFileDialog dialog = new()
@@ -123,13 +124,13 @@ public partial class MainWindow : Window
 
 		if (dialog.ShowDialog() == true)
 		{
-			CurrentFilePath = dialog.FileName;
-			File.WriteAllText(CurrentFilePath, this.EditingArea.Text);
+			this.CurrentFilePath = dialog.FileName;
+			File.WriteAllText(this.CurrentFilePath, this.EditingArea.Text);
 		}
 	}
 	private void SaveFile()
 	{
-		if (string.IsNullOrEmpty(CurrentFilePath))
+		if (string.IsNullOrEmpty(this.CurrentFilePath))
 		{
 			SaveFileDialog dialog = new()
 			{
@@ -139,34 +140,41 @@ public partial class MainWindow : Window
 
 			if (dialog.ShowDialog() == true)
 			{
-				CurrentFilePath = dialog.FileName;
-				File.WriteAllText(CurrentFilePath, this.EditingArea.Text);
-				HasChanged = false;
+				this.CurrentFilePath = dialog.FileName;
             }
 			return;
 		}
 		try
 		{
-			File.WriteAllText(CurrentFilePath, this.EditingArea.Text);
+			File.WriteAllText(this.CurrentFilePath, this.EditingArea.Text);
 		}
-		catch (Exception) 
+		catch (UnauthorizedAccessException)
 		{
-			MessageBox.Show("Failed to save the file: File is not found or it's readonly.");
+			MessageBox.Show("File is read-only!");
 		}
+		catch (SecurityException)
+		{
+			MessageBox.Show("Permission denied.");
+		}
+		catch (Exception ex)
+		{
+			MessageBox.Show(ex.Message);
+		}
+		this.HasChanged = false;
 	}
 	private void OpenFile(string path)
 	{
-		CurrentFilePath = path;
-		this.EditingArea.Text = File.ReadAllText(CurrentFilePath);
-		HasChanged = false;
-		FileReadonly.IsChecked = (File.GetAttributes(CurrentFilePath) & FileAttributes.ReadOnly) == FileAttributes.ReadOnly;
+		this.CurrentFilePath = path;
+		this.EditingArea.Text = File.ReadAllText(this.CurrentFilePath);
+		this.HasChanged = false;
+		this.FileReadonly.IsChecked = (File.GetAttributes(this.CurrentFilePath) & FileAttributes.ReadOnly) == FileAttributes.ReadOnly;
     }
 	private void OnOpen(object _, RoutedEventArgs _2)
 	{
-		var result = AskSaveChange();
+		var result = this.AskSaveChange();
 
 		if (result == MessageBoxResult.Yes)
-			SaveFile();
+			this.SaveFile();
 
 		OpenFileDialog openFileDialog = new()
 		{
@@ -174,17 +182,17 @@ public partial class MainWindow : Window
 		};
 		if (openFileDialog.ShowDialog() == true)
 		{
-			OpenFile(openFileDialog.FileName);
+			this.OpenFile(openFileDialog.FileName);
 		}
 	}
 	private void OnReOpen(object sender, RoutedEventArgs e)
 	{
-		var result = AskSaveChange();
+		var result = this.AskSaveChange();
 
 		if (result == MessageBoxResult.Yes)
-			SaveFile();
+			this.SaveFile();
 
-		OpenFile(CurrentFilePath);
+		this.OpenFile(this.CurrentFilePath);
 	}
 	private void OpenInCMD(object _, RoutedEventArgs _2) =>
 		Process.Start("cmd", $"/k cd /d \"{Path.GetDirectoryName(this.CurrentFilePath)}\"");
@@ -196,29 +204,29 @@ public partial class MainWindow : Window
 		this._parent.RemoveAll();
 	private void OnClosing(object? _, EventArgs _2)
 	{
-		var result = AskSaveChange();
+		var result = this.AskSaveChange();
 
 		if (result == MessageBoxResult.Cancel) return;
-		if (result == MessageBoxResult.Yes) SaveFile();
+		if (result == MessageBoxResult.Yes) this.SaveFile();
 	}
 	private void RemoveCurrentFile(object _, RoutedEventArgs _2)
 	{
         var check = MessageBox.Show("Do you want to save changes?", "Warning", MessageBoxButton.YesNoCancel);
 		if (check == MessageBoxResult.Yes) {
-			FileSystem.DeleteFile(CurrentFilePath, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
-            HasChanged = false;
-            OnNewFile(null!, null!);
+			FileSystem.DeleteFile(this.CurrentFilePath, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
+			this.HasChanged = false;
+			this.OnNewFile(null!, null!);
         }
 	}
 	private void ReadonlyFile(object _, RoutedEventArgs _2)
 	{
-        if (FileReadonly.IsChecked)
+        if (this.FileReadonly.IsChecked)
         {
-            File.SetAttributes(_currentFilePath, File.GetAttributes(_currentFilePath) | FileAttributes.ReadOnly);
+            File.SetAttributes(this._currentFilePath, File.GetAttributes(this._currentFilePath) | FileAttributes.ReadOnly);
         }
         else
         {
-            File.SetAttributes(_currentFilePath, File.GetAttributes(_currentFilePath) & ~FileAttributes.ReadOnly);
+            File.SetAttributes(this._currentFilePath, File.GetAttributes(this._currentFilePath) & ~FileAttributes.ReadOnly);
         }
     }
 	#endregion
@@ -226,5 +234,5 @@ public partial class MainWindow : Window
 	#endregion
 
 	private void ReOpenInNotepad(object sender, RoutedEventArgs e) =>
-		Process.Start("notepad.exe", CurrentFilePath);
+		Process.Start("notepad.exe", this.CurrentFilePath);
 }

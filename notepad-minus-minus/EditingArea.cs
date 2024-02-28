@@ -39,8 +39,8 @@ public partial class MainWindow : Window
 		bool isScrollUp = args.Delta > 0;
 		if (!this._leftControlPressed ||
 			(this.EditingArea.FontSize > 694.20 && isScrollUp) || 
-			(this.EditingArea.FontSize < 1 && !isScrollUp)) 
-			return;
+			(this.EditingArea.FontSize < 1 && !isScrollUp)) return;
+
 		double sizeToAdd = this.EditingArea.FontSize * 0.2;
 		if (sizeToAdd > 12)
 			sizeToAdd = 12;
