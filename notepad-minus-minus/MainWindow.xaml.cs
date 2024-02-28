@@ -45,6 +45,7 @@ public partial class MainWindow : Window
 				this.ReOpenMenuItem.IsEnabled = true;
 				this.DeleteFileMenuItem.IsEnabled = true;
 				this.ReOpenNotepadMenuItem.IsEnabled = true;
+				this.FileReadonly.IsEnabled = true;
 			}
 			else
 			{
@@ -52,6 +53,7 @@ public partial class MainWindow : Window
 				this.ReOpenMenuItem.IsEnabled = false;
 				this.DeleteFileMenuItem.IsEnabled = false;
 				this.ReOpenNotepadMenuItem.IsEnabled = false;
+				this.FileReadonly.IsEnabled = false;
 			}
 		}
 	}
@@ -140,18 +142,25 @@ public partial class MainWindow : Window
 				CurrentFilePath = dialog.FileName;
 				File.WriteAllText(CurrentFilePath, this.EditingArea.Text);
 				HasChanged = false;
-			}
+            }
 			return;
 		}
-
-		File.WriteAllText(CurrentFilePath, this.EditingArea.Text);
+		try
+		{
+			File.WriteAllText(CurrentFilePath, this.EditingArea.Text);
+		}
+		catch (Exception) 
+		{
+			MessageBox.Show("Failed to save the file: File is not found or it's readonly.");
+		}
 	}
 	private void OpenFile(string path)
 	{
 		CurrentFilePath = path;
 		this.EditingArea.Text = File.ReadAllText(CurrentFilePath);
 		HasChanged = false;
-	}
+		FileReadonly.IsChecked = (File.GetAttributes(CurrentFilePath) & FileAttributes.ReadOnly) == FileAttributes.ReadOnly;
+    }
 	private void OnOpen(object _, RoutedEventArgs _2)
 	{
 		var result = AskSaveChange();
@@ -194,11 +203,24 @@ public partial class MainWindow : Window
 	}
 	private void RemoveCurrentFile(object _, RoutedEventArgs _2)
 	{
-		FileSystem.DeleteFile(CurrentFilePath, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
-		// it is not neccessry to make options of delete permently/send to recycle bin cuz send to recycle bin actually follows system options
-		HasChanged = false;
-		OnNewFile(null!, null!);
+        var check = MessageBox.Show("Do you want to save changes?", "Warning", MessageBoxButton.YesNoCancel);
+		if (check == MessageBoxResult.Yes) {
+			FileSystem.DeleteFile(CurrentFilePath, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
+            HasChanged = false;
+            OnNewFile(null!, null!);
+        }
 	}
+	private void ReadonlyFile(object _, RoutedEventArgs _2)
+	{
+        if (FileReadonly.IsChecked)
+        {
+            File.SetAttributes(_currentFilePath, File.GetAttributes(_currentFilePath) | FileAttributes.ReadOnly);
+        }
+        else
+        {
+            File.SetAttributes(_currentFilePath, File.GetAttributes(_currentFilePath) & ~FileAttributes.ReadOnly);
+        }
+    }
 	#endregion
 
 	#endregion
